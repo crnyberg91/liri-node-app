@@ -10,7 +10,7 @@ inquirer
 	.prompt([
 		{
 			type: "list",
-			message: "What is that your are looking for?",
+			message: "What is it that you are looking for?",
 			choices: ["music", "a movie", "a concert/event", "surprise me"],
 			name: "apiChoice"
 		}
@@ -28,9 +28,10 @@ inquirer
 			case "a concert/event": //case for concert choice
 				concertCase(); //calls the concertCase function to run
 				break;
-			case "surprise me":
+            case "surprise me":
+
 				switch (action) {
-					case "music":
+                    case "music":     
 						spotifySearch(song);
 						break;
                     case "movie":
@@ -96,7 +97,6 @@ const movieCase = () => {
 
 const omdbSearch = movie => {
 	let queryUrl = "http://www.omdbapi.com/?t=" + movie + "&y=&plot=short&apikey=trilogy"; //movie added to queryUrl for omdb
-
 	axios
 		.get(queryUrl)
 		.then(response => {
@@ -123,7 +123,7 @@ const concertCase = () => {
 				type: "input",
 				message: "Name of the act you want to see: ",
 				name: "act",
-				validate: function validateAct(name) {
+				validate: function validateAct(name) { //function ensuring something is entered
 					return name !== "";
 				}
 			}
@@ -140,11 +140,7 @@ const eventSearch = (act) => {
 	axios
 		.get(queryUrl)
 		.then(response => {
-			const actDate = response.data[0].datetime
-				.substr(0, 10)
-				.split("-")
-				.reverse()
-				.join("/");
+			const actDate = response.data[0].datetime.substr(0, 10).split("-").reverse().join("/");
 			const actVenue = response.data[0].venue; //saving venue path as a variable
 			console.log(`name of venue: ${actVenue.name}`); //name of venue
 			console.log(`where: ${(actVenue.city, actVenue.region, actVenue.country)}`); //venue location
@@ -154,3 +150,4 @@ const eventSearch = (act) => {
 			console.log(err.message);
 		});
 };
+
