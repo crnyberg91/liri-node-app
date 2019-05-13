@@ -18,35 +18,48 @@ inquirer
 		switch (
 			inquirerResponse.apiChoice //the apiChoice goes through a switch case associated to the answer
 		) {
-			case "music":
-				inquirer.prompt([
-					{
-						type: "input",
-						message: "name of artist:",
-						name: "artist"
-					}
-				]);
-				// .then(inquirerResponse => {});
-				//spotify-api-node request prompt code here
-				break;
-			case "a movie": //case for movie choice
-				inquirer
+			case "music": //case for music choice
+				inquirer //inquirer input for music choice
 					.prompt([
 						{
 							type: "input",
-							message: "name of title:", //input to store preferred movie
+							message: "name of song:",
+							name: "song"
+						}
+					])
+					.then(inquirerResponse => {
+						let song = inquirerResponse.song; //saving song title as song
+						if (!inquirerResponse.song) {
+							song = "The Sign ace of base"; //if nothing is inputed, the sign will be default
+						}
+						spotify.search({ type: "track", query: song, limit: 1 }, (err, response) => {
+							const trackList = response.tracks.items[0]; //returned data path stored as trackList
+                            if (err) return console.log(err.message); //err first
+                            //list of specific details out of the data
+							console.log(`by: ${trackList.artists[0].name}`);
+							console.log(`Song name: ${trackList.name}`);
+							console.log(`song preview: ${trackList.preview_url}`);
+							console.log(`Album name: ${trackList.album.name}`);
+						});
+					});
+
+				break;
+			case "a movie": //case for movie choice
+				inquirer //inquirer input to store preferred movie
+					.prompt([
+						{
+							type: "input",
+							message: "name of title:",
 							name: "title"
 						}
 					])
 					.then(inquirerResponse => {
 						let movie = inquirerResponse.title; //saving title as movie
 						if (!inquirerResponse.title) {
-							//if nothing was typed, it'll default to mr nobody
-							movie = "mr nobody";
+							movie = "mr nobody"; //if nothing was typed, it'll default to mr nobody
 						}
-						// console.log(movie);
-						let queryUrl = "http://www.omdbapi.com/?t=" + movie + "&y=&plot=short&apikey=trilogy"; //movie added to queryUrl for omdb
-						// console.log(queryUrl);
+                        let queryUrl = "http://www.omdbapi.com/?t=" + movie + "&y=&plot=short&apikey=trilogy"; //movie added to queryUrl for omdb
+                        
 						axios
 							.get(queryUrl)
 							.then(response => {
@@ -81,11 +94,15 @@ inquirer
 					.then(inquirerResponse => {
 						let act = inquirerResponse.act;
 						let queryUrl = "https://rest.bandsintown.com/artists/" + act + "/events?app_id=codingbootcamp";
-						// console.log(queryUrl);
+					
 						axios
 							.get(queryUrl)
 							.then(response => {
-								const actDate = response.data[0].datetime.substr(0, 10).split("-").reverse().join("/");
+								const actDate = response.data[0].datetime
+									.substr(0, 10)
+									.split("-")
+									.reverse()
+									.join("/");
 								const actVenue = response.data[0].venue; //saving venue path as a variable
 								console.log(`name of venue: ${actVenue.name}`); //name of venue
 								console.log(`where: ${(actVenue.city, actVenue.region, actVenue.country)}`); //venue location
@@ -95,7 +112,6 @@ inquirer
 								console.log(err.message);
 							});
 					});
-				//bandsintown axios get request prompt here
 				break;
 			case "surprise me":
 				//random selected from the random.txt file
