@@ -153,9 +153,9 @@ const eventSearch = searchInput => {
 const randomPick = () => {
 	fs.readFile("../text/random.txt", "utf8", (err, data) => {
 		if (err) return console.log(err.message);
-		const dataArr = data.split("\r");
+		const dataArr = data.split("\n");
 		const selectedLine = dataArr[Math.floor(Math.random() * dataArr.length)];
-		const action = selectedLine.split(",")[0].trim();
+		const action = selectedLine.split(",")[0];
 		const searchInput = selectedLine.split(",")[1];
 		console.log("action: " + action);
 		console.log("searchInput: " + searchInput);
