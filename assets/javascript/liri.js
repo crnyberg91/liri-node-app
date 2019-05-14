@@ -33,15 +33,6 @@ inquirer
 				break;
 			case "surprise me":
 				randomPick();
-				switch (action) {
-					case "music":
-						spotifySearch(searchInput);
-						break;
-					case "movie":
-						omdbSearch(searchInput);
-					case "event":
-						eventSearch(searchInput);
-				}
 				// random selected from the random.txt file
 				break;
 			default:
@@ -164,11 +155,19 @@ const randomPick = () => {
 		if (err) return console.log(err.message);
 		const dataArr = data.split("\r");
 		const selectedLine = dataArr[Math.floor(Math.random() * dataArr.length)];
-		const action = selectedLine.split(",")[0];
+		const action = selectedLine.split(",")[0].trim();
 		const searchInput = selectedLine.split(",")[1];
 		console.log("action: " + action);
-		console.log("search input: " + searchInput);
+		console.log("searchInput: " + searchInput);
 
-		return action, searchInput;
+		switch (action) {
+			case "music":
+				spotifySearch(searchInput);
+				break;
+			case "movie":
+				omdbSearch(searchInput);
+			case "event":
+				eventSearch(searchInput);
+		}
 	});
 };
