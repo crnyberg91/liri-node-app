@@ -130,6 +130,7 @@ const concertCase = () => {
 };
 
 const eventSearch = searchInput => {
+	console.log(searchInput);
 	let queryUrl = "https://rest.bandsintown.com/artists/" + searchInput + "/events?app_id=codingbootcamp";
 
 	axios
@@ -146,7 +147,7 @@ const eventSearch = searchInput => {
 			console.log(`date: ${actDate}`); //date event
 		})
 		.catch(err => {
-			console.log(err.message);
+			console.log(err);
 		});
 };
 
@@ -159,15 +160,17 @@ const randomPick = () => {
 		const searchInput = selectedLine.split(",")[1];
 		console.log("action: " + action);
 		console.log("searchInput: " + searchInput);
-
+console.log("searchInput", searchInput);
 		switch (action) {
 			case "music":
 				spotifySearch(searchInput);
 				break;
 			case "movie":
 				omdbSearch(searchInput);
+				break;
 			case "event":
 				eventSearch(searchInput);
+				break;
 		}
 	});
 };
