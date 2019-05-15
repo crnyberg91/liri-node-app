@@ -64,10 +64,12 @@ const spotifySearch = searchInput => {
 		const trackList = response.tracks.items[0]; //returned data path stored as trackList
 		if (err) return console.log(err.message); //err first
 		//list of specific details out of the data
-		console.log(`by: ${trackList.artists[0].name}`);
-		console.log(`Song name: ${trackList.name}`);
-		console.log(`song preview: ${trackList.preview_url}`);
-		console.log(`Album name: ${trackList.album.name}`);
+		console.log(`==================================================
+By: ${trackList.artists[0].name}
+Song Name: ${trackList.name}
+Song Preview: ${trackList.preview_url}
+Album Name: ${trackList.album.name}
+==================================================`);
 	});
 };
 
@@ -95,14 +97,16 @@ const omdbSearch = searchInput => {
 		.get(queryUrl)
 		.then(response => {
 			//displays only specific results about the searched movie in a clean manner on the console
-			console.log(`Title: ${response.data.Title}`);
-			console.log(`Year released: ${response.data.Year}`);
-			console.log(`IMDB rating: ${response.data.imdbRating}`);
-			console.log(`Rotten Tomatoes Rating: ${response.data.Ratings[1].Value}`);
-			console.log(`Country: ${response.data.Country}`);
-			console.log(`Language: ${response.data.Language}`);
-			console.log(`Plot: ${response.data.Plot}`);
-			console.log(`Actors: ${response.data.Actors}`);
+			console.log(`==================================================
+Title: ${response.data.Title}
+Year released: ${response.data.Year}
+IMDB rating: ${response.data.imdbRating}
+Rotten Tomatoes Rating: ${response.data.Ratings[1].Value}
+Country: ${response.data.Country}
+Language: ${response.data.Language}
+Plot: ${response.data.Plot}
+Actors: ${response.data.Actors}
+==================================================`);
 		})
 		.catch(err => {
 			//in case of error, the error message will display
@@ -130,6 +134,7 @@ const concertCase = () => {
 };
 
 const eventSearch = searchInput => {
+	console.log(searchInput);
 	let queryUrl = "https://rest.bandsintown.com/artists/" + searchInput + "/events?app_id=codingbootcamp";
 
 	axios
@@ -141,33 +146,36 @@ const eventSearch = searchInput => {
 				.reverse()
 				.join("/");
 			const actVenue = response.data[0].venue; //saving venue path as a variable
-			console.log(`name of venue: ${actVenue.name}`); //name of venue
-			console.log(`where: ${actVenue.city}, ${actVenue.region} ${actVenue.country}`); //venue location
-			console.log(`date: ${actDate}`); //date event
+			console.log(`==================================================
+Name of venue: ${actVenue.name}
+Where: ${actVenue.city}, ${actVenue.region} ${actVenue.country}
+Date: ${actDate}
+==================================================`);//template literal with venue, location, and date
 		})
 		.catch(err => {
-			console.log(err.message);
+			console.log(err);
 		});
 };
 
 const randomPick = () => {
 	fs.readFile("../text/random.txt", "utf8", (err, data) => {
 		if (err) return console.log(err.message);
-		const dataArr = data.split("\r");
+		const dataArr = data.split("\n");
 		const selectedLine = dataArr[Math.floor(Math.random() * dataArr.length)];
-		const action = selectedLine.split(",")[0].trim();
+		const action = selectedLine.split(",")[0];
 		const searchInput = selectedLine.split(",")[1];
 		console.log("action: " + action);
 		console.log("searchInput: " + searchInput);
-
 		switch (action) {
 			case "music":
 				spotifySearch(searchInput);
 				break;
 			case "movie":
 				omdbSearch(searchInput);
+				break;
 			case "event":
 				eventSearch(searchInput);
+				break;
 		}
 	});
 };
