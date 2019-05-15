@@ -166,7 +166,6 @@ const randomPick = () => {
 		const searchInput = selectedLine.split(",")[1];
 		console.log("action: " + action);
 		console.log("searchInput: " + searchInput);
-		console.log("searchInput", searchInput);
 		switch (action) {
 			case "music":
 				spotifySearch(searchInput);
