@@ -8,6 +8,14 @@ ___
 My liri-node-app is capable to access the Spotify, BandsinTown, and OMDB APIs and return specific information pertaining to what was searched.
 ___
 
+## INSTALL
+___
+clone from Github page
+
+in terminal or gitBash, run a git clone in desired location to save app.
+
+Run an npm install to download required packages.
+
 ## INQUIRER
 ___
 The app program starts with an inquirer prompt that asks the question "What is it that you are looking for?"
